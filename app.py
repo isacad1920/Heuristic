@@ -224,29 +224,14 @@ PROJECTS = {
     "P10": {"leader": "E", "members": ["A", "B", "C", "D"]},
 }
 
-if __name__ == "__main__":
-    num_days = 4
-    num_slots = 1
-    num_rooms = 3
-
-    # Schedule projects
-    schedule, penalty = schedule_projects(num_days, num_slots, num_rooms, PROJECTS)
-
-    print("Schedule:")
-    print_schedule(schedule)
-    print(schedule)
-
-    # Print the total penalty
-    print(f"\nTotal Penalty: {penalty}")
 
 
 # ---------------------- Helper Functions ----------------------
 import matplotlib.pyplot as plt
 import networkx as nx
+from networkx import draw
  
-def draw_graph():
-
-    def plot_schedule_graph(schedule, projects):
+def plot_schedule_graph(schedule, projects):
         # Collect unique projects from the schedule
         unique_projects = {room[0] for day in schedule for slot in day for room in slot if room}
 
@@ -284,4 +269,19 @@ def draw_graph():
         nx.draw_networkx_labels(G, pos, labels)
         plt.title("Project Schedule and Conflicts")
         plt.show()
+if __name__ == "__main__":
+    num_days = 4
+    num_slots = 1
+    num_rooms = 3
 
+    # Schedule projects
+    schedule, penalty = schedule_projects(num_days, num_slots, num_rooms, PROJECTS)
+
+    print("Schedule:")
+    print_schedule(schedule)
+    print(schedule)
+
+    # Print the total penalty
+    print(f"\nTotal Penalty: {penalty}")
+    #draw the schedule graph
+    plot_schedule_graph(schedule, PROJECTS)
