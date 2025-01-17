@@ -1,2 +1,2 @@
-matplotlib==3.4.3
-networkx==2.6.3
+matplotlib
+networkx
