@@ -1,7 +1,7 @@
 # ---------------------- Helper Functions ----------------------
 
 def check_same_leader(leader, projects):
-    """Check if the same leader is assigned to multiple projects."""
+    #Check if the same leader is assigned to multiple projects.
     for project in projects:
         if project in PROJECTS and leader == PROJECTS[project]['leader']:
             return True
@@ -64,9 +64,7 @@ def select_project_with_least_conflict(available_projects, selected_projects):
 
 
 def is_last_project_scheduled(all_selected_projects, total_projects):
-    """
-    Check if the last project (based on the order) is assigned.
-    """
+
     # If the number of selected projects equals the total number of projects, return True
     return len(all_selected_projects) == total_projects
 
@@ -225,50 +223,6 @@ PROJECTS = {
 }
 
 
-
-# ---------------------- Helper Functions ----------------------
-import matplotlib.pyplot as plt
-import networkx as nx
-from networkx import draw
- 
-def plot_schedule_graph(schedule, projects):
-        # Collect unique projects from the schedule
-        unique_projects = {room[0] for day in schedule for slot in day for room in slot if room}
-
-        # Create a graph
-        G = nx.Graph()
-
-        # Assign unique colors to projects
-        color_map = plt.cm.tab10(range(len(unique_projects)))
-        project_colors = {project: color_map[idx % len(color_map)] for idx, project in enumerate(unique_projects)}
-
-        # Add nodes for each project
-        for project in unique_projects:
-            G.add_node(project, label=project, color=project_colors[project])
-
-        # Add edges based on shared members
-        for project in unique_projects:
-            members = set(projects[project]['members'])
-            leader = projects[project]['leader']
-            for other_project in unique_projects:
-                if project != other_project:
-                    other_members = set(projects[other_project]['members'])
-                    other_leader = projects[other_project]['leader']
-                    if leader in other_members or other_leader in members or members & other_members:
-                        G.add_edge(project, other_project, color='black')  # Conflict edges are red
-
-        # Extract node and edge colors
-        node_colors = [data['color'] for _, data in G.nodes(data=True)]
-        edge_colors = [data['color'] for _, _, data in G.edges(data=True)]
-
-        # Draw the graph
-        pos = nx.spring_layout(G)
-        nx.draw(G, pos, with_labels=True, node_size=3000, node_color=node_colors, font_size=10, font_weight="bold")
-        nx.draw_networkx_edges(G, pos, edge_color=edge_colors)
-        labels = nx.get_node_attributes(G, 'label')
-        nx.draw_networkx_labels(G, pos, labels)
-        plt.title("Project Schedule and Conflicts")
-        plt.show()
 if __name__ == "__main__":
     num_days = 4
     num_slots = 1
@@ -283,5 +237,3 @@ if __name__ == "__main__":
 
     # Print the total penalty
     print(f"\nTotal Penalty: {penalty}")
-    #draw the schedule graph
-    plot_schedule_graph(schedule, PROJECTS)
